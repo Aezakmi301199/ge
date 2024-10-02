@@ -1,0 +1,5005 @@
+openapi: 3.0.0
+paths:
+  /api/app/init:
+    post:
+      operationId: AppController_handle
+      summary: Главный обработчик битрикс
+      parameters: []
+      responses:
+        '302':
+          description: ''
+      tags:
+        - App
+  /api/app/install:
+    post:
+      operationId: AppController_install
+      summary: Установка битрикс
+      parameters: []
+      responses:
+        '302':
+          description: ''
+      tags:
+        - App
+  /api/user/{id}/collections:
+    get:
+      operationId: UserController_findCollections
+      summary: Получить коллекции пользователя
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+        - name: isActive
+          required: true
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CollectionResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '403':
+          content:
+            application/json:
+              examples:
+                ForbiddenException:
+                  description: Forbidden
+                  value:
+                    statusCode: 403
+                    message: Forbidden
+                    error: Forbidden
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 403
+                  message:
+                    type: string
+                    example: Forbidden
+                  error:
+                    type: string
+                    example: Forbidden
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - User
+  /api/user/{id}/deals:
+    get:
+      operationId: UserController_findDeals
+      summary: Получить сделки пользователя
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+        - name: dealCategoryType
+          required: true
+          in: query
+          schema:
+            title: Категория сделки
+            enum:
+              - SALE
+              - BUY
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DealResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '403':
+          content:
+            application/json:
+              examples:
+                ForbiddenException:
+                  description: Forbidden
+                  value:
+                    statusCode: 403
+                    message: Forbidden
+                    error: Forbidden
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 403
+                  message:
+                    type: string
+                    example: Forbidden
+                  error:
+                    type: string
+                    example: Forbidden
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - User
+  /api/user:
+    get:
+      operationId: UserController_findCurrent
+      summary: Получить текущего пользователя
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - User
+  /api/collection/{id}:
+    get:
+      operationId: CollectionController_findOne
+      summary: Получение коллекции по id
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+      tags:
+        - Collection
+    put:
+      operationId: CollectionController_update
+      summary: Обновление коллекции
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCollectionDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Collection
+  /api/collection/{id}/expire:
+    put:
+      operationId: CollectionController_expire
+      summary: Перенесение коллекции в архив
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Collection
+  /api/collection/{id}/add-property:
+    put:
+      operationId: CollectionController_addProperty
+      summary: Добавление объекта в коллекцию
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UuidDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Collection
+  /api/collection/{id}/remove-property:
+    put:
+      operationId: CollectionController_removeProperty
+      summary: Удаление объекта из коллекции
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UuidDto'
+      responses:
+        '204':
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Collection
+  /api/collection/{id}/renew-expiration:
+    put:
+      operationId: CollectionController_renewExpiration
+      summary: Возобновление коллекции
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Collection
+  /api/deal/{id}/collection:
+    post:
+      operationId: DealController_createCollection
+      summary: Создание подборки
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCollectionDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Deal
+  /api/property:
+    get:
+      operationId: PropertyController_findByFilter
+      summary: Получить объекты по фильтру
+      parameters:
+        - name: floorFrom
+          required: false
+          in: query
+          description: Минимальный этаж, на котором расположен объект недвижимости
+          schema:
+            type: number
+        - name: floorTo
+          required: false
+          in: query
+          description: Максимальный этаж, на котором расположен объект недвижимости
+          schema:
+            type: number
+        - name: roomCount
+          required: false
+          in: query
+          description: Количество комнат в объекте недвижимости
+          schema:
+            type: number
+        - name: floorCount
+          required: false
+          in: query
+          description: Общее количество этажей в здании
+          schema:
+            type: number
+        - name: hasMaidRoom
+          required: false
+          in: query
+          description: Наличие комнаты для прислуги
+          example: false
+          schema:
+            type: boolean
+        - name: bedroomCount
+          required: false
+          in: query
+          description: Количество спален в объекте недвижимости
+          example:
+            - 1
+            - 2
+            - 3
+          schema:
+            type: array
+            items:
+              type: number
+        - name: bathroomCount
+          required: false
+          in: query
+          description: Количество ванных комнат в объекте недвижимости
+          example:
+            - 1
+            - 2
+            - 3
+          schema:
+            type: array
+            items:
+              type: number
+        - name: sizeFrom
+          required: false
+          in: query
+          description: Минимальная площадь объекта недвижимости (в квадратных метрах)
+          schema:
+            type: number
+        - name: sizeTo
+          required: false
+          in: query
+          description: Максимальная площадь объекта недвижимости (в квадратных метрах)
+          schema:
+            type: number
+        - name: plotSizeFrom
+          required: false
+          in: query
+          description: Минимальная площадь участка (в квадратных метрах)
+          schema:
+            type: number
+        - name: plotSizeTo
+          required: false
+          in: query
+          description: Максимальная площадь участка (в квадратных метрах)
+          schema:
+            type: number
+        - name: isDraft
+          required: false
+          in: query
+          description: Флаг, указывающий, является ли объект черновиком
+          schema:
+            default: false
+            type: boolean
+        - name: cityId
+          required: false
+          in: query
+          description: Идентификатор города, к которому относится объект недвижимости
+          example: e9ce2462-c859-4f9a-9577-4f4554f3f80e
+          schema:
+            type: string
+        - name: buildingId
+          required: false
+          in: query
+          description: >-
+            Идентификатор здания, в котором находится объект недвижимости (если
+            применимо)
+          example: e92949b0-7581-4400-a0d9-180233dc39f4
+          schema:
+            type: string
+        - name: propertyType
+          required: true
+          in: query
+          description: Тип объекта недвижимости
+          example: APARTMENT
+          schema:
+            enum:
+              - APARTMENT
+              - TOWNHOUSE
+              - VILLA
+              - BUNGALOW
+              - LAND
+              - COMPOUND
+              - DUPLEX
+              - PENTHOUSE
+              - FULL_FLOOR
+              - HALF_FLOOR
+              - WHOLE_BUILDING
+              - BULK_UNITS
+            type: string
+        - name: dealType
+          required: true
+          in: query
+          description: Тип сделки по объекту недвижимости
+          example: SALE
+          schema:
+            enum:
+              - SALE
+              - RENT
+            type: string
+        - name: category
+          required: true
+          in: query
+          description: Категория объекта недвижимости
+          example: PRIMARY
+          schema:
+            enum:
+              - PRIMARY
+              - SECONDARY
+              - COMMERCIAL
+            type: string
+        - name: status
+          required: false
+          in: query
+          description: Статус объекта недвижимости
+          example: ACTIVE
+          schema:
+            enum:
+              - PRE_LISTING
+              - ACTIVE
+              - TO_FIX
+              - SUSPENDED
+              - DEPOSIT
+              - DELETED
+              - SOLD
+            type: string
+        - name: priceFrom
+          required: false
+          in: query
+          description: Минимальная цена объекта недвижимости.
+          schema:
+            type: number
+        - name: priceTo
+          required: false
+          in: query
+          description: Максимальная цена объекта недвижимости.
+          schema:
+            type: number
+        - name: amenities
+          required: false
+          in: query
+          description: >-
+            Список идентификаторов удобств, которые должны быть включены в
+            объект недвижимости
+          example:
+            - a7b9fa87-7723-4d97-ad1b-980a585014dd
+            - c54f3c5b-6754-4d70-b22a-78d9143b6404
+          schema:
+            type: array
+            items:
+              type: string
+        - name: orderBy
+          required: true
+          in: query
+          description: Колонка, по которой производится сортировка
+          example: createdAt
+          schema:
+            enum:
+              - price
+              - area
+              - createdAt
+              - updatedAt
+            type: string
+        - name: orderDirection
+          required: true
+          in: query
+          description: Порядок сортировки
+          example: asc
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: page
+          required: true
+          in: query
+          description: Номер страницы
+          example: 1
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PropertyResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Property
+  /api/property/count:
+    get:
+      operationId: PropertyController_countByFilter
+      summary: Получить количество объектов по фильтру
+      parameters:
+        - name: floorFrom
+          required: false
+          in: query
+          description: Минимальный этаж, на котором расположен объект недвижимости
+          schema:
+            type: number
+        - name: floorTo
+          required: false
+          in: query
+          description: Максимальный этаж, на котором расположен объект недвижимости
+          schema:
+            type: number
+        - name: roomCount
+          required: false
+          in: query
+          description: Количество комнат в объекте недвижимости
+          schema:
+            type: number
+        - name: floorCount
+          required: false
+          in: query
+          description: Общее количество этажей в здании
+          schema:
+            type: number
+        - name: hasMaidRoom
+          required: false
+          in: query
+          description: Наличие комнаты для прислуги
+          example: false
+          schema:
+            type: boolean
+        - name: bedroomCount
+          required: false
+          in: query
+          description: Количество спален в объекте недвижимости
+          example:
+            - 1
+            - 2
+            - 3
+          schema:
+            type: array
+            items:
+              type: number
+        - name: bathroomCount
+          required: false
+          in: query
+          description: Количество ванных комнат в объекте недвижимости
+          example:
+            - 1
+            - 2
+            - 3
+          schema:
+            type: array
+            items:
+              type: number
+        - name: sizeFrom
+          required: false
+          in: query
+          description: Минимальная площадь объекта недвижимости (в квадратных метрах)
+          schema:
+            type: number
+        - name: sizeTo
+          required: false
+          in: query
+          description: Максимальная площадь объекта недвижимости (в квадратных метрах)
+          schema:
+            type: number
+        - name: plotSizeFrom
+          required: false
+          in: query
+          description: Минимальная площадь участка (в квадратных метрах)
+          schema:
+            type: number
+        - name: plotSizeTo
+          required: false
+          in: query
+          description: Максимальная площадь участка (в квадратных метрах)
+          schema:
+            type: number
+        - name: isDraft
+          required: false
+          in: query
+          description: Флаг, указывающий, является ли объект черновиком
+          schema:
+            default: false
+            type: boolean
+        - name: cityId
+          required: false
+          in: query
+          description: Идентификатор города, к которому относится объект недвижимости
+          example: e9ce2462-c859-4f9a-9577-4f4554f3f80e
+          schema:
+            type: string
+        - name: buildingId
+          required: false
+          in: query
+          description: >-
+            Идентификатор здания, в котором находится объект недвижимости (если
+            применимо)
+          example: e92949b0-7581-4400-a0d9-180233dc39f4
+          schema:
+            type: string
+        - name: propertyType
+          required: true
+          in: query
+          description: Тип объекта недвижимости
+          example: APARTMENT
+          schema:
+            enum:
+              - APARTMENT
+              - TOWNHOUSE
+              - VILLA
+              - BUNGALOW
+              - LAND
+              - COMPOUND
+              - DUPLEX
+              - PENTHOUSE
+              - FULL_FLOOR
+              - HALF_FLOOR
+              - WHOLE_BUILDING
+              - BULK_UNITS
+            type: string
+        - name: dealType
+          required: true
+          in: query
+          description: Тип сделки по объекту недвижимости
+          example: SALE
+          schema:
+            enum:
+              - SALE
+              - RENT
+            type: string
+        - name: category
+          required: true
+          in: query
+          description: Категория объекта недвижимости
+          example: PRIMARY
+          schema:
+            enum:
+              - PRIMARY
+              - SECONDARY
+              - COMMERCIAL
+            type: string
+        - name: status
+          required: false
+          in: query
+          description: Статус объекта недвижимости
+          example: ACTIVE
+          schema:
+            enum:
+              - PRE_LISTING
+              - ACTIVE
+              - TO_FIX
+              - SUSPENDED
+              - DEPOSIT
+              - DELETED
+              - SOLD
+            type: string
+        - name: priceFrom
+          required: false
+          in: query
+          description: Минимальная цена объекта недвижимости.
+          schema:
+            type: number
+        - name: priceTo
+          required: false
+          in: query
+          description: Максимальная цена объекта недвижимости.
+          schema:
+            type: number
+        - name: amenities
+          required: false
+          in: query
+          description: >-
+            Список идентификаторов удобств, которые должны быть включены в
+            объект недвижимости
+          example:
+            - a7b9fa87-7723-4d97-ad1b-980a585014dd
+            - c54f3c5b-6754-4d70-b22a-78d9143b6404
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Property
+  /api/property/{id}:
+    put:
+      operationId: PropertyController_update
+      summary: Обновить объект
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePropertyDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyResponse'
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '403':
+          content:
+            application/json:
+              examples:
+                ForbiddenException:
+                  description: Forbidden
+                  value:
+                    statusCode: 403
+                    message: Forbidden
+                    error: Forbidden
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 403
+                  message:
+                    type: string
+                    example: Forbidden
+                  error:
+                    type: string
+                    example: Forbidden
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Property
+    get:
+      operationId: PropertyController_findById
+      summary: Получить объект по ID
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '404':
+          content:
+            application/json:
+              examples:
+                NotFoundException:
+                  description: Not Found
+                  value:
+                    statusCode: 404
+                    message: Not Found
+                    error: Not Found
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 404
+                  message:
+                    type: string
+                    example: Not Found
+                  error:
+                    type: string
+                    example: Not Found
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Property
+  /api/property/{id}/update-status:
+    put:
+      operationId: PropertyController_updateStatus
+      summary: Обновить статус объекта
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePropertyStatusDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyResponse'
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '403':
+          content:
+            application/json:
+              examples:
+                ForbiddenException:
+                  description: Forbidden
+                  value:
+                    statusCode: 403
+                    message: Forbidden
+                    error: Forbidden
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 403
+                  message:
+                    type: string
+                    example: Forbidden
+                  error:
+                    type: string
+                    example: Forbidden
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Property
+  /api/property/draft:
+    post:
+      operationId: PropertyController_createDraft
+      summary: Создать черновик
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePropertyDraftDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '403':
+          content:
+            application/json:
+              examples:
+                ForbiddenException:
+                  description: Forbidden
+                  value:
+                    statusCode: 403
+                    message: Forbidden
+                    error: Forbidden
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 403
+                  message:
+                    type: string
+                    example: Forbidden
+                  error:
+                    type: string
+                    example: Forbidden
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Property
+    get:
+      operationId: PropertyController_getDraft
+      summary: Получить черновик
+      parameters:
+        - name: dealId
+          required: true
+          in: query
+          description: Идентификатор сделки
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPropertyDraftResponse'
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '403':
+          content:
+            application/json:
+              examples:
+                ForbiddenException:
+                  description: Forbidden
+                  value:
+                    statusCode: 403
+                    message: Forbidden
+                    error: Forbidden
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 403
+                  message:
+                    type: string
+                    example: Forbidden
+                  error:
+                    type: string
+                    example: Forbidden
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '404':
+          content:
+            application/json:
+              examples:
+                NotFoundException:
+                  description: Not Found
+                  value:
+                    statusCode: 404
+                    message: Not Found
+                    error: Not Found
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 404
+                  message:
+                    type: string
+                    example: Not Found
+                  error:
+                    type: string
+                    example: Not Found
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Property
+  /api/property/{id}/attachments:
+    post:
+      operationId: PropertyController_uploadAttachment
+      summary: Загрузить вложение
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AddAttachmentDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyAttachmentResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Property
+  /api/property/{id}/show:
+    post:
+      operationId: PropertyController_createShow
+      summary: Создать показ по объекту
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DealIdDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShowResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '403':
+          content:
+            application/json:
+              examples:
+                ForbiddenException:
+                  description: Forbidden
+                  value:
+                    statusCode: 403
+                    message: Forbidden
+                    error: Forbidden
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 403
+                  message:
+                    type: string
+                    example: Forbidden
+                  error:
+                    type: string
+                    example: Forbidden
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '409':
+          content:
+            application/json:
+              examples:
+                ConflictException:
+                  description: Conflict
+                  value:
+                    statusCode: 409
+                    message: Conflict
+                    error: Conflict
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 409
+                  message:
+                    type: string
+                    example: Conflict
+                  error:
+                    type: string
+                    example: Conflict
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Property
+  /api/property/{id}/comments:
+    get:
+      operationId: PropertyController_findCommentsById
+      summary: Получить комментарии по объекту
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+        - name: page
+          required: true
+          in: query
+          schema:
+            title: Номер страницы
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PropertyCommentResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Property
+  /api/property/{id}/comment:
+    post:
+      operationId: PropertyController_addComment
+      summary: Добавить комментарий к объекту
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePropertyCommentDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyCommentResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Property
+  /api/property/{id}/publication:
+    post:
+      operationId: PropertyController_addPublication
+      summary: Опубликовать объявление
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePropertyPublicationDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyPublicationResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Property
+  /api/property/{id}/action-history:
+    get:
+      operationId: PropertyController_getHistory
+      summary: Получить историю изменений по объекту
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+        - name: page
+          required: true
+          in: query
+          schema:
+            title: Номер страницы
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PropertyActionHistoryResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Property
+  /api/property/{id}/action-history/count:
+    get:
+      operationId: PropertyController_getHistoryCount
+      summary: Получить количество изменений по объекту
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CountResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Property
+  /api/property-attachments/{id}/rotate:
+    put:
+      operationId: PropertyAttachmentController_rotate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RotateAttachmentDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyAttachmentResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Property attachments
+  /api/property-attachments/{id}:
+    put:
+      operationId: PropertyAttachmentController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAttachmentDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyAttachmentResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Property attachments
+    delete:
+      operationId: PropertyAttachmentController_delete
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      responses:
+        '204':
+          description: ''
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Property attachments
+  /api/city/{id}/custom-fields:
+    get:
+      operationId: CityController_getCustomFields
+      summary: Получить схему валидации города
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomFieldsResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - City
+  /api/city/{id}/currency:
+    get:
+      operationId: CityController_getAvailableCurrencies
+      summary: Получить доступные валюты города
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CurrencyResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - City
+  /api/city/{id}/districts:
+    get:
+      operationId: CityController_getDistricts
+      summary: Получить районы города
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+        - name: name
+          required: false
+          in: query
+          description: Name of the district
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DistrictResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - City
+  /api/city/{id}/buildings:
+    get:
+      operationId: CityController_getBuildings
+      summary: Получить здания города
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            title: ID сущности
+            format: uuid
+            type: string
+        - name: districtId
+          required: false
+          in: query
+          description: Идентификатор района
+          schema:
+            type: string
+        - name: name
+          required: false
+          in: query
+          description: Название здания
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BuildingResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - City
+  /api/amenity:
+    get:
+      operationId: AmenityController_getAll
+      summary: Получить список удобств
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AmenityResponse'
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - Amenity
+  /api/view:
+    get:
+      operationId: ViewController_findByCityId
+      summary: Получить виды по городу
+      parameters:
+        - name: cityId
+          required: true
+          in: query
+          example:
+            - a10c48f3-15b6-4b55-a9ef-a6fa30f6b679
+            - 9bb4659b-db92-4cf4-90ef-65d1953bab72
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ViewResponse'
+        '400':
+          content:
+            application/json:
+              examples:
+                BadRequestException:
+                  description: Bad Request
+                  value:
+                    statusCode: 400
+                    message: Bad Request
+                    error: Bad Request
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 400
+                  message:
+                    type: string
+                    example: Bad Request
+                  error:
+                    type: string
+                    example: Bad Request
+                required:
+                  - statusCode
+                  - message
+          description: ''
+        '401':
+          content:
+            application/json:
+              examples:
+                UnauthorizedException:
+                  description: Unauthorized
+                  value:
+                    statusCode: 401
+                    message: Unauthorized
+                    error: Unauthorized
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: number
+                    example: 401
+                  message:
+                    type: string
+                    example: Unauthorized
+                  error:
+                    type: string
+                    example: Unauthorized
+                required:
+                  - statusCode
+                  - message
+          description: ''
+      tags:
+        - View
+info:
+  title: ''
+  description: ''
+  version: 1.0.0
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas:
+    UserStatus:
+      type: string
+      enum:
+        - ACTIVE
+        - FIRED
+        - ON_VACATION
+    PortalDepartments:
+      type: object
+      properties:
+        portalId:
+          type: string
+        structure:
+          type: object
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+        portal:
+          $ref: '#/components/schemas/Portal'
+      required:
+        - portalId
+        - structure
+        - createdAt
+        - updatedAt
+        - portal
+    PropertyType:
+      type: string
+      enum:
+        - APARTMENT
+        - TOWNHOUSE
+        - VILLA
+        - BUNGALOW
+        - LAND
+        - COMPOUND
+        - DUPLEX
+        - PENTHOUSE
+        - FULL_FLOOR
+        - HALF_FLOOR
+        - WHOLE_BUILDING
+        - BULK_UNITS
+    PropertyCategory:
+      type: string
+      enum:
+        - PRIMARY
+        - SECONDARY
+        - COMMERCIAL
+    DealType:
+      type: string
+      enum:
+        - SALE
+        - RENT
+    PropertyStatus:
+      type: string
+      enum:
+        - PRE_LISTING
+        - ACTIVE
+        - TO_FIX
+        - SUSPENDED
+        - DEPOSIT
+        - DELETED
+        - SOLD
+    Country:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+        cities:
+          type: array
+          items:
+            $ref: '#/components/schemas/City'
+      required:
+        - id
+        - name
+        - createdAt
+        - updatedAt
+        - cities
+    District:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        cityId:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+      required:
+        - id
+        - name
+        - cityId
+        - createdAt
+        - updatedAt
+    Building:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        streetName:
+          type: string
+          nullable: true
+        number:
+          type: string
+          nullable: true
+        cityId:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        location:
+          $ref: '#/components/schemas/Point'
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+      required:
+        - id
+        - name
+        - streetName
+        - number
+        - cityId
+        - location
+        - createdAt
+        - updatedAt
+    NewBuilding:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        microdistrictId:
+          type: string
+          nullable: true
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+        property:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property'
+        microdistrict:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/Microdistrict'
+      required:
+        - id
+        - name
+        - description
+        - microdistrictId
+        - createdAt
+        - updatedAt
+        - property
+        - microdistrict
+    Microdistrict:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        cityId:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property'
+        city:
+          $ref: '#/components/schemas/City'
+        newBuildings:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewBuilding'
+      required:
+        - id
+        - name
+        - cityId
+        - createdAt
+        - updatedAt
+        - properties
+        - city
+        - newBuildings
+    PropertyViews:
+      type: object
+      properties:
+        propertyId:
+          type: string
+        viewId:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        property:
+          $ref: '#/components/schemas/Property'
+        view:
+          $ref: '#/components/schemas/View'
+      required:
+        - propertyId
+        - viewId
+        - createdAt
+        - property
+        - view
+    View:
+      type: object
+      properties:
+        id:
+          type: string
+        cityId:
+          type: string
+        name:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        city:
+          $ref: '#/components/schemas/City'
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyViews'
+      required:
+        - id
+        - cityId
+        - name
+        - createdAt
+        - city
+        - properties
+    CitiesPortals:
+      type: object
+      properties:
+        city:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            latitude:
+              type: number
+            longitude:
+              type: number
+            name:
+              type: string
+            country:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+                - name
+          required:
+            - id
+            - latitude
+            - longitude
+            - name
+            - country
+      required:
+        - city
+    CityCustomField:
+      type: object
+      properties:
+        id:
+          type: string
+        cityId:
+          type: string
+        schema:
+          type: object
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        city:
+          $ref: '#/components/schemas/City'
+      required:
+        - id
+        - cityId
+        - schema
+        - createdAt
+        - city
+    CurrencyISOLetters:
+      type: string
+      enum:
+        - RUB
+        - AED
+        - USD
+        - THB
+        - EUR
+        - BYN
+    PropertyPriceHistory:
+      type: object
+      properties:
+        id:
+          type: string
+        propertyId:
+          type: string
+        price:
+          format: int64
+          type: integer
+        currencyId:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        property:
+          $ref: '#/components/schemas/Property'
+        currency:
+          $ref: '#/components/schemas/Currency'
+      required:
+        - id
+        - propertyId
+        - price
+        - currencyId
+        - createdAt
+        - property
+        - currency
+    Currency:
+      type: object
+      properties:
+        id:
+          type: string
+        isoLetters:
+          $ref: '#/components/schemas/CurrencyISOLetters'
+      required:
+        - id
+        - isoLetters
+    CityCurrency:
+      type: object
+      properties:
+        cityId:
+          type: string
+        currencyId:
+          type: string
+        city:
+          $ref: '#/components/schemas/City'
+        currency:
+          $ref: '#/components/schemas/Currency'
+      required:
+        - cityId
+        - currencyId
+        - city
+        - currency
+    City:
+      type: object
+      properties:
+        id:
+          type: string
+        countryId:
+          type: string
+        name:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+        country:
+          $ref: '#/components/schemas/Country'
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property'
+        districts:
+          type: array
+          items:
+            $ref: '#/components/schemas/District'
+        buildings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Building'
+        microdistricts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Microdistrict'
+        views:
+          type: array
+          items:
+            $ref: '#/components/schemas/View'
+        citiesPortals:
+          type: array
+          items:
+            $ref: '#/components/schemas/CitiesPortals'
+        cityCustomFields:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/CityCustomField'
+        cityCurrency:
+          type: array
+          items:
+            $ref: '#/components/schemas/CityCurrency'
+      required:
+        - id
+        - countryId
+        - name
+        - latitude
+        - longitude
+        - createdAt
+        - updatedAt
+        - country
+        - properties
+        - districts
+        - buildings
+        - microdistricts
+        - views
+        - citiesPortals
+        - cityCustomFields
+        - cityCurrency
+    PropertyActionHistory:
+      type: object
+      properties:
+        id:
+          type: string
+        propertyId:
+          type: string
+        actionType:
+          type: string
+        data:
+          type: object
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updaterId:
+          type: string
+          nullable: true
+        property:
+          $ref: '#/components/schemas/Property'
+        updater:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/User'
+      required:
+        - id
+        - propertyId
+        - actionType
+        - data
+        - createdAt
+        - updaterId
+        - property
+        - updater
+    Amenity:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        iconName:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        propertyAmenity:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyAmenity'
+      required:
+        - id
+        - name
+        - iconName
+        - createdAt
+        - propertyAmenity
+    PropertyAmenity:
+      type: object
+      properties:
+        propertyId:
+          type: string
+        amenityId:
+          type: string
+        property:
+          $ref: '#/components/schemas/Property'
+        amenity:
+          $ref: '#/components/schemas/Amenity'
+      required:
+        - propertyId
+        - amenityId
+        - property
+        - amenity
+    AttachmentType:
+      type: string
+      enum:
+        - PHOTO
+        - PASSPORT
+        - CONTRACT
+        - TITLE_DEED
+    PropertyAttachment:
+      type: object
+      properties:
+        id:
+          type: string
+        propertyId:
+          type: string
+        type:
+          $ref: '#/components/schemas/AttachmentType'
+        url:
+          type: string
+        index:
+          type: number
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        property:
+          $ref: '#/components/schemas/Property'
+      required:
+        - id
+        - propertyId
+        - type
+        - url
+        - index
+        - createdAt
+        - property
+    Collection:
+      type: object
+      properties:
+        id:
+          type: string
+        creatorDealId:
+          type: number
+        bitrixTodoId:
+          type: number
+        name:
+          type: string
+        userId:
+          type: string
+        expiresAt:
+          format: date-time
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyCollection'
+      required:
+        - id
+        - creatorDealId
+        - bitrixTodoId
+        - name
+        - userId
+        - expiresAt
+        - createdAt
+        - user
+        - properties
+    PropertyCollection:
+      type: object
+      properties:
+        propertyId:
+          type: string
+        collectionId:
+          type: string
+        property:
+          $ref: '#/components/schemas/PropertyResponse'
+        collection:
+          $ref: '#/components/schemas/Collection'
+      required:
+        - propertyId
+        - collectionId
+        - property
+        - collection
+    Show:
+      type: object
+      properties:
+        propertyId:
+          type: string
+        initiatorDealId:
+          type: number
+        bitrixTaskId:
+          type: number
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        property:
+          $ref: '#/components/schemas/Property'
+      required:
+        - propertyId
+        - initiatorDealId
+        - bitrixTaskId
+        - createdAt
+        - property
+    PublicationTarget:
+      type: string
+      enum:
+        - PROPERTY_FINDER
+        - ETAGI
+    PublicationStatus:
+      type: string
+      enum:
+        - REQUESTED
+        - DRAFT_CREATED
+        - PUBLISHED
+        - FAILED
+        - UPDATE_REQUESTED
+        - UPDATED
+    PropertyPublication:
+      type: object
+      properties:
+        propertyId:
+          type: string
+        internalId:
+          type: string
+          nullable: true
+        target:
+          $ref: '#/components/schemas/PublicationTarget'
+        status:
+          $ref: '#/components/schemas/PublicationStatus'
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+        property:
+          $ref: '#/components/schemas/Property'
+      required:
+        - propertyId
+        - internalId
+        - target
+        - status
+        - createdAt
+        - updatedAt
+        - property
+    PropertyComment:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        propertyId:
+          type: string
+        text:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        property:
+          $ref: '#/components/schemas/Property'
+        user:
+          $ref: '#/components/schemas/User'
+      required:
+        - id
+        - userId
+        - propertyId
+        - text
+        - createdAt
+        - property
+        - user
+    Property:
+      type: object
+      properties:
+        id:
+          type: string
+        isDraft:
+          type: boolean
+        cityId:
+          type: string
+        portalId:
+          type: string
+        buildingId:
+          type: string
+          nullable: true
+        districtId:
+          type: string
+          nullable: true
+        microdistrictId:
+          type: string
+          nullable: true
+        responsibleId:
+          type: string
+        creatorId:
+          type: string
+        propertyType:
+          $ref: '#/components/schemas/PropertyType'
+        category:
+          $ref: '#/components/schemas/PropertyCategory'
+        dealType:
+          $ref: '#/components/schemas/DealType'
+        typeFields:
+          type: object
+          nullable: true
+        bitrixDealId:
+          type: number
+          nullable: true
+        price:
+          format: int64
+          type: integer
+          nullable: true
+        currencyId:
+          type: string
+          nullable: true
+        status:
+          nullable: true
+          $ref: '#/components/schemas/PropertyStatus'
+        descriptionEN:
+          type: string
+          nullable: true
+        descriptionRU:
+          type: string
+          nullable: true
+        latitude:
+          type: number
+          nullable: true
+        longitude:
+          type: number
+          nullable: true
+        newBuildingId:
+          type: string
+          nullable: true
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+      required:
+        - id
+        - isDraft
+        - cityId
+        - portalId
+        - buildingId
+        - districtId
+        - microdistrictId
+        - responsibleId
+        - creatorId
+        - propertyType
+        - category
+        - dealType
+        - typeFields
+        - bitrixDealId
+        - price
+        - currencyId
+        - status
+        - descriptionEN
+        - descriptionRU
+        - latitude
+        - longitude
+        - newBuildingId
+        - createdAt
+        - updatedAt
+        - currency
+    UserRole:
+      type: string
+      enum:
+        - REALTOR
+        - MANAGER
+        - MODERATOR
+        - ADMIN
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          $ref: '#/components/schemas/UserRole'
+        isDefault:
+          type: boolean
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        departmentRoles:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalDepartmentRoles'
+      required:
+        - id
+        - name
+        - isDefault
+        - createdAt
+        - users
+        - departmentRoles
+    PortalDepartmentRoles:
+      type: object
+      properties:
+        portalId:
+          type: string
+        roleId:
+          type: string
+        bitrixDepartmentId:
+          type: number
+        portal:
+          $ref: '#/components/schemas/Portal'
+        role:
+          $ref: '#/components/schemas/Role'
+      required:
+        - portalId
+        - roleId
+        - bitrixDepartmentId
+        - portal
+        - role
+    DealCategory:
+      type: string
+      enum:
+        - SALE
+        - BUY
+    PortalDealCategories:
+      type: object
+      properties:
+        id:
+          type: string
+        portalId:
+          type: string
+        categoryId:
+          type: number
+        type:
+          $ref: '#/components/schemas/DealCategory'
+        portal:
+          $ref: '#/components/schemas/Portal'
+      required:
+        - id
+        - portalId
+        - categoryId
+        - type
+        - portal
+    Portal:
+      type: object
+      properties:
+        id:
+          type: string
+        hash:
+          type: string
+        domain:
+          type: string
+        clientIdCipher:
+          type: string
+          nullable: true
+        clientSecretCipher:
+          type: string
+          nullable: true
+        appId:
+          type: number
+          nullable: true
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        departments:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/PortalDepartments'
+        property:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property'
+        citiesPortals:
+          type: array
+          items:
+            $ref: '#/components/schemas/CitiesPortals'
+        departmentRoles:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalDepartmentRoles'
+        dealCategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalDealCategories'
+      required:
+        - id
+        - hash
+        - domain
+        - clientIdCipher
+        - clientSecretCipher
+        - appId
+        - createdAt
+        - updatedAt
+        - users
+        - departments
+        - property
+        - citiesPortals
+        - departmentRoles
+        - dealCategories
+    UserAdminToken:
+      type: object
+      properties:
+        userId:
+          type: string
+        accessTokenCipher:
+          type: string
+        refreshTokenCipher:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+        user:
+          $ref: '#/components/schemas/User'
+      required:
+        - userId
+        - accessTokenCipher
+        - refreshTokenCipher
+        - createdAt
+        - updatedAt
+        - user
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        bitrixUserId:
+          type: number
+        portalUserId:
+          type: number
+        portalId:
+          type: string
+        roleId:
+          type: string
+        surname:
+          type: string
+        name:
+          type: string
+        patronymic:
+          type: string
+          nullable: true
+        email:
+          type: string
+        photo:
+          type: string
+          nullable: true
+        departments:
+          type: object
+        lastLoginAt:
+          format: date-time
+          type: string
+        registeredAt:
+          format: date-time
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+        status:
+          $ref: '#/components/schemas/UserStatus'
+        portal:
+          $ref: '#/components/schemas/Portal'
+        adminToken:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/UserAdminToken'
+        role:
+          $ref: '#/components/schemas/Role'
+        createdProperty:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property'
+        responsibleForProperty:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property'
+        collections:
+          type: array
+          items:
+            $ref: '#/components/schemas/Collection'
+        actionHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyActionHistory'
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyComment'
+      required:
+        - id
+        - bitrixUserId
+        - portalUserId
+        - portalId
+        - roleId
+        - surname
+        - name
+        - patronymic
+        - email
+        - photo
+        - departments
+        - lastLoginAt
+        - registeredAt
+        - createdAt
+        - updatedAt
+        - status
+        - portal
+        - adminToken
+        - role
+        - createdProperty
+        - responsibleForProperty
+        - collections
+        - actionHistory
+        - comments
+    CollectionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        creatorDealId:
+          type: number
+        bitrixTodoId:
+          type: number
+        name:
+          type: string
+        userId:
+          type: string
+        expiresAt:
+          format: date-time
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyCollection'
+      required:
+        - id
+        - creatorDealId
+        - bitrixTodoId
+        - name
+        - userId
+        - expiresAt
+        - createdAt
+        - user
+        - properties
+    DealResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+      required:
+        - id
+        - title
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        bitrixUserId:
+          type: number
+        portalUserId:
+          type: number
+        portalId:
+          type: string
+        roleId:
+          type: string
+        surname:
+          type: string
+        name:
+          type: string
+        patronymic:
+          type: string
+          nullable: true
+        email:
+          type: string
+        photo:
+          type: string
+          nullable: true
+        departments:
+          type: object
+        lastLoginAt:
+          format: date-time
+          type: string
+        registeredAt:
+          format: date-time
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+        status:
+          $ref: '#/components/schemas/UserStatus'
+        portal:
+          $ref: '#/components/schemas/Portal'
+        adminToken:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/UserAdminToken'
+        role:
+          $ref: '#/components/schemas/Role'
+        createdProperty:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property'
+        responsibleForProperty:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property'
+        collections:
+          type: array
+          items:
+            $ref: '#/components/schemas/Collection'
+        actionHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyActionHistory'
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyComment'
+      required:
+        - id
+        - bitrixUserId
+        - portalUserId
+        - portalId
+        - roleId
+        - surname
+        - name
+        - patronymic
+        - email
+        - photo
+        - departments
+        - lastLoginAt
+        - registeredAt
+        - createdAt
+        - updatedAt
+        - status
+        - portal
+        - adminToken
+        - role
+        - createdProperty
+        - responsibleForProperty
+        - collections
+        - actionHistory
+        - comments
+    UpdateCollectionDto:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+    UuidDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: ID сущности
+      required:
+        - id
+    CreateCollectionDto:
+      type: object
+      properties:
+        name:
+          type: string
+        propertyIds:
+          type: array
+          items:
+            type: string
+      required:
+        - name
+        - propertyIds
+    PropertyResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        isDraft:
+          type: boolean
+        cityId:
+          type: string
+        portalId:
+          type: string
+        buildingId:
+          type: string
+          nullable: true
+        districtId:
+          type: string
+          nullable: true
+        microdistrictId:
+          type: string
+          nullable: true
+        responsibleId:
+          type: string
+        creatorId:
+          type: string
+        propertyType:
+          $ref: '#/components/schemas/PropertyType'
+        category:
+          $ref: '#/components/schemas/PropertyCategory'
+        dealType:
+          $ref: '#/components/schemas/DealType'
+        typeFields:
+          type: object
+          nullable: true
+        bitrixDealId:
+          type: number
+          nullable: true
+        price:
+          format: int64
+          type: integer
+          nullable: true
+        currencyId:
+          type: string
+          nullable: true
+        status:
+          nullable: true
+          $ref: '#/components/schemas/PropertyStatus'
+        descriptionEN:
+          type: string
+          nullable: true
+        descriptionRU:
+          type: string
+          nullable: true
+        latitude:
+          type: number
+          nullable: true
+        longitude:
+          type: number
+          nullable: true
+        newBuildingId:
+          type: string
+          nullable: true
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+        city:
+          $ref: '#/components/schemas/City'
+        responsible:
+          $ref: '#/components/schemas/User'
+        creator:
+          $ref: '#/components/schemas/User'
+        actionHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyActionHistory'
+        propertyAmenity:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyAmenity'
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyAttachment'
+        priceHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyPriceHistory'
+        building:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/Building'
+        district:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/District'
+        microdistrict:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/Microdistrict'
+        collections:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyCollection'
+        shows:
+          type: array
+          items:
+            $ref: '#/components/schemas/Show'
+        newBuilding:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/NewBuilding'
+        views:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyViews'
+        portal:
+          $ref: '#/components/schemas/Portal'
+        publications:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyPublication'
+        currency:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/Currency'
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyComment'
+      required:
+        - id
+        - isDraft
+        - cityId
+        - portalId
+        - buildingId
+        - districtId
+        - microdistrictId
+        - responsibleId
+        - creatorId
+        - propertyType
+        - category
+        - dealType
+        - typeFields
+        - bitrixDealId
+        - price
+        - currencyId
+        - status
+        - descriptionEN
+        - descriptionRU
+        - latitude
+        - longitude
+        - newBuildingId
+        - createdAt
+        - updatedAt
+        - city
+        - responsible
+        - creator
+        - actionHistory
+        - propertyAmenity
+        - attachments
+        - priceHistory
+        - building
+        - district
+        - microdistrict
+        - collections
+        - shows
+        - newBuilding
+        - views
+        - portal
+        - publications
+        - currency
+        - comments
+    PropertyDraftResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        isDraft:
+          type: boolean
+        cityId:
+          type: string
+        portalId:
+          type: string
+        buildingId:
+          type: string
+          nullable: true
+        districtId:
+          type: string
+          nullable: true
+        microdistrictId:
+          type: string
+          nullable: true
+        responsibleId:
+          type: string
+        creatorId:
+          type: string
+        propertyType:
+          $ref: '#/components/schemas/PropertyType'
+        category:
+          $ref: '#/components/schemas/PropertyCategory'
+        dealType:
+          $ref: '#/components/schemas/DealType'
+        typeFields:
+          type: object
+          nullable: true
+        bitrixDealId:
+          type: number
+          nullable: true
+        price:
+          format: int64
+          type: integer
+          nullable: true
+        currencyId:
+          type: string
+          nullable: true
+        status:
+          nullable: true
+          $ref: '#/components/schemas/PropertyStatus'
+        descriptionEN:
+          type: string
+          nullable: true
+        descriptionRU:
+          type: string
+          nullable: true
+        latitude:
+          type: number
+          nullable: true
+        longitude:
+          type: number
+          nullable: true
+        newBuildingId:
+          type: string
+          nullable: true
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+        propertyAmenity:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyAmenity'
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyAttachment'
+        views:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyViews'
+      required:
+        - id
+        - isDraft
+        - cityId
+        - portalId
+        - buildingId
+        - districtId
+        - microdistrictId
+        - responsibleId
+        - creatorId
+        - propertyType
+        - category
+        - dealType
+        - typeFields
+        - bitrixDealId
+        - price
+        - currencyId
+        - status
+        - descriptionEN
+        - descriptionRU
+        - latitude
+        - longitude
+        - newBuildingId
+        - createdAt
+        - updatedAt
+        - propertyAmenity
+        - attachments
+        - views
+    GetPropertyDraftResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        isDraft:
+          type: boolean
+        cityId:
+          type: string
+        portalId:
+          type: string
+        buildingId:
+          type: string
+          nullable: true
+        districtId:
+          type: string
+          nullable: true
+        microdistrictId:
+          type: string
+          nullable: true
+        responsibleId:
+          type: string
+        creatorId:
+          type: string
+        propertyType:
+          $ref: '#/components/schemas/PropertyType'
+        category:
+          $ref: '#/components/schemas/PropertyCategory'
+        dealType:
+          $ref: '#/components/schemas/DealType'
+        typeFields:
+          type: object
+          nullable: true
+        bitrixDealId:
+          type: number
+          nullable: true
+        price:
+          format: int64
+          type: integer
+          nullable: true
+        currencyId:
+          type: string
+          nullable: true
+        status:
+          nullable: true
+          $ref: '#/components/schemas/PropertyStatus'
+        descriptionEN:
+          type: string
+          nullable: true
+        descriptionRU:
+          type: string
+          nullable: true
+        latitude:
+          type: number
+          nullable: true
+        longitude:
+          type: number
+          nullable: true
+        newBuildingId:
+          type: string
+          nullable: true
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+        propertyAmenity:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyAmenity'
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyAttachment'
+        views:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyViews'
+      required:
+        - id
+        - isDraft
+        - cityId
+        - portalId
+        - buildingId
+        - districtId
+        - microdistrictId
+        - responsibleId
+        - creatorId
+        - propertyType
+        - category
+        - dealType
+        - typeFields
+        - bitrixDealId
+        - price
+        - currencyId
+        - status
+        - descriptionEN
+        - descriptionRU
+        - latitude
+        - longitude
+        - newBuildingId
+        - createdAt
+        - updatedAt
+        - propertyAmenity
+        - attachments
+        - views
+    CountResponse:
+      type: object
+      properties:
+        count:
+          type: number
+      required:
+        - count
+    UpdatePropertyDto:
+      type: object
+      properties:
+        isDraft:
+          type: boolean
+          description: Указывает, находится ли объект недвижимости в режиме черновика
+        cityId:
+          type: string
+          description: UUID города, связанного с объектом недвижимости
+          format: uuid
+        status:
+          type: string
+          description: Статус объекта недвижимости
+          enum:
+            - PRE_LISTING
+            - ACTIVE
+            - TO_FIX
+            - SUSPENDED
+            - DEPOSIT
+            - DELETED
+            - SOLD
+        category:
+          type: string
+          description: Категория объекта недвижимости
+          enum:
+            - PRIMARY
+            - SECONDARY
+            - COMMERCIAL
+        propertyType:
+          type: string
+          description: Тип объекта недвижимости
+          enum:
+            - APARTMENT
+            - TOWNHOUSE
+            - VILLA
+            - BUNGALOW
+            - LAND
+            - COMPOUND
+            - DUPLEX
+            - PENTHOUSE
+            - FULL_FLOOR
+            - HALF_FLOOR
+            - WHOLE_BUILDING
+            - BULK_UNITS
+        typeFields:
+          type: object
+          description: Поля, специфичные для типа объекта недвижимости
+        price:
+          type: number
+          description:
+            Цена объекта недвижимости, обязательна, если объект не находится в
+            черновике
+          maximum: 9999999999999
+        currencyId:
+          type: string
+          description: Идентификатор валюты
+        descriptionEN:
+          type: string
+          description:
+            Описание объекта недвижимости на английском языке, обязательное,
+            если объект не находится в черновике
+          maxLength: 1500
+        descriptionRU:
+          type: string
+          description:
+            Описание объекта недвижимости на русском языке, обязательное, если
+            объект не находится в черновике
+          maxLength: 1500
+        amenities:
+          description: Список UUID удобств, связанных с объектом недвижимости
+          type: array
+          items:
+            type: string
+            format: uuid
+        views:
+          description: Список UUID видов, связанных с объектом недвижимости
+          type: array
+          items:
+            type: string
+            format: uuid
+        dealId:
+          type: number
+          description: Идентификатор сделки
+        latitude:
+          type: number
+          description: Широта объекта недвижимости
+        longitude:
+          type: number
+          description: Долгота объекта недвижимости
+      required:
+        - cityId
+    UpdatePropertyStatusDto:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Статус объекта недвижимости
+          enum:
+            - PRE_LISTING
+            - ACTIVE
+            - TO_FIX
+            - SUSPENDED
+            - DEPOSIT
+            - DELETED
+            - SOLD
+      required:
+        - status
+    CreatePropertyDraftDto:
+      type: object
+      properties:
+        cityId:
+          type: string
+          description: Идентификатор города
+          format: uuid
+        propertyType:
+          $ref: '#/components/schemas/PropertyType'
+        dealId:
+          type: number
+          description: Идентификатор сделки
+        category:
+          type: string
+          description: Категория объекта
+          example: SECONDARY
+        dealType:
+          type: string
+          description: Тип сделки
+          example: SALE
+      required:
+        - cityId
+        - propertyType
+        - dealId
+        - category
+        - dealType
+    AddAttachmentDto:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+        type:
+          type: string
+      required:
+        - file
+        - type
+    PropertyAttachmentResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        propertyId:
+          type: string
+        type:
+          $ref: '#/components/schemas/AttachmentType'
+        url:
+          type: string
+        index:
+          type: number
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+      required:
+        - id
+        - propertyId
+        - type
+        - url
+        - index
+        - createdAt
+        - domain
+    DealIdDto:
+      type: object
+      properties:
+        dealId:
+          type: number
+          description: Идентификатор сделки
+      required:
+        - dealId
+    ShowResponse:
+      type: object
+      properties:
+        propertyId:
+          type: string
+        initiatorDealId:
+          type: number
+        bitrixTaskId:
+          type: number
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        property:
+          $ref: '#/components/schemas/Property'
+      required:
+        - propertyId
+        - initiatorDealId
+        - bitrixTaskId
+        - createdAt
+        - property
+    PropertyCommentResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        propertyId:
+          type: string
+        text:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        user:
+          $ref: '#/components/schemas/User'
+      required:
+        - id
+        - userId
+        - propertyId
+        - text
+        - createdAt
+        - user
+    CreatePropertyCommentDto:
+      type: object
+      properties:
+        text:
+          type: string
+          title: Текст комментария
+      required:
+        - text
+    CreatePropertyPublicationDto:
+      type: object
+      properties:
+        target:
+          type: string
+          title: Площадка для публикации
+      required:
+        - target
+    PropertyPublicationResponse:
+      type: object
+      properties:
+        propertyId:
+          type: string
+        internalId:
+          type: string
+          nullable: true
+        target:
+          $ref: '#/components/schemas/PublicationTarget'
+        status:
+          $ref: '#/components/schemas/PublicationStatus'
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+        property:
+          $ref: '#/components/schemas/Property'
+      required:
+        - propertyId
+        - internalId
+        - target
+        - status
+        - createdAt
+        - updatedAt
+        - property
+    PropertyActionHistoryResponse:
+      type: object
+      properties:
+        actionType:
+          type: string
+        data:
+          type: object
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+      required:
+        - actionType
+        - data
+        - createdAt
+    RotateAttachmentDto:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - PHOTO
+            - PASSPORT
+            - CONTRACT
+            - TITLE_DEED
+        degrees:
+          type: number
+      required:
+        - type
+        - degrees
+    UpdateAttachmentDto:
+      type: object
+      properties:
+        degrees:
+          type: number
+        type:
+          type: string
+          enum:
+            - PHOTO
+            - PASSPORT
+            - CONTRACT
+            - TITLE_DEED
+      required:
+        - degrees
+        - type
+    CustomFieldsResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        cityId:
+          type: string
+        schema:
+          type: object
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+      required:
+        - id
+        - cityId
+        - schema
+        - createdAt
+    CurrencyResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        isoLetters:
+          $ref: '#/components/schemas/CurrencyISOLetters'
+      required:
+        - id
+        - isoLetters
+    DistrictResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        cityId:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+        updatedAt:
+          format: date-time
+          type: string
+          nullable: true
+      required:
+        - id
+        - name
+        - cityId
+        - createdAt
+        - updatedAt
+    BuildingLocationResponse:
+      type: object
+      properties:
+        type:
+          type: string
+        coordinates:
+          example:
+            - 49.988
+            - 36.224
+          type: array
+          items:
+            type: string
+      required:
+        - type
+        - coordinates
+    BuildingResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        district:
+          type: string
+        location:
+          $ref: '#/components/schemas/BuildingLocationResponse'
+      required:
+        - id
+        - name
+        - district
+        - location
+    AmenityResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        iconName:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+      required:
+        - id
+        - name
+        - iconName
+        - createdAt
+    ViewResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        cityId:
+          type: string
+        name:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+          nullable: true
+      required:
+        - id
+        - cityId
+        - name
+        - createdAt
+    Geometry:
+      type: object
+      description: GeoJSon geometry
+      discriminator:
+        propertyName: type
+        mapping:
+          Point: Point
+          LineString: LineString
+          Polygon: Polygon
+          MultiPoint: MultiPoint
+          MultiLineString: MultiLineString
+          MultiPolygon: MultiPolygon
+      required:
+        - type
+      externalDocs:
+        url: http://geojson.org/geojson-spec.html#geometry-objects
+      properties:
+        type:
+          type: string
+          enum:
+            - Point
+            - LineString
+            - Polygon
+            - MultiPoint
+            - MultiLineString
+            - MultiPolygon
+          description: the geometry type
+    Point3D:
+      type: array
+      description: Point in 3D space
+      externalDocs:
+        url: http://geojson.org/geojson-spec.html#id2
+      minItems: 2
+      maxItems: 3
+      items:
+        type: number
+    Point:
+      type: object
+      description: GeoJSon geometry
+      externalDocs:
+        url: http://geojson.org/geojson-spec.html#id2
+      allOf:
+        - $ref: '#/components/schemas/Geometry'
+        - properties:
+            coordinates:
+              $ref: '#/components/schemas/Point3D'
+    LineString:
+      type: object
+      description: GeoJSon geometry
+      externalDocs:
+        url: http://geojson.org/geojson-spec.html#id3
+      allOf:
+        - $ref: '#/components/schemas/Geometry'
+        - properties:
+            coordinates:
+              type: array
+              items:
+                $ref: '#/components/schemas/Point3D'
+    Polygon:
+      type: object
+      description: GeoJSon geometry
+      externalDocs:
+        url: http://geojson.org/geojson-spec.html#id4
+      allOf:
+        - $ref: '#/components/schemas/Geometry'
+        - properties:
+            coordinates:
+              type: array
+              items:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Point3D'
+    MultiPoint:
+      type: object
+      description: GeoJSon geometry
+      externalDocs:
+        url: http://geojson.org/geojson-spec.html#id5
+      allOf:
+        - $ref: '#/components/schemas/Geometry'
+        - properties:
+            coordinates:
+              type: array
+              items:
+                $ref: '#/components/schemas/Point3D'
+    MultiLineString:
+      type: object
+      description: GeoJSon geometry
+      externalDocs:
+        url: http://geojson.org/geojson-spec.html#id6
+      allOf:
+        - $ref: '#/components/schemas/Geometry'
+        - properties:
+            coordinates:
+              type: array
+              items:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Point3D'
+    MultiPolygon:
+      type: object
+      description: GeoJSon geometry
+      externalDocs:
+        url: http://geojson.org/geojson-spec.html#id6
+      allOf:
+        - $ref: '#/components/schemas/Geometry'
+        - properties:
+            coordinates:
+              type: array
+              items:
+                type: array
+                items:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Point3D'
+    GeometryCollection:
+      type: object
+      description: GeoJSon geometry collection
+      required:
+        - type
+        - geometries
+      externalDocs:
+        url: http://geojson.org/geojson-spec.html#geometrycollection
+      properties:
+        type:
+          type: string
+          enum:
+            - GeometryCollection
+        geometries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Geometry'
+    Feature:
+      type: object
+      description: GeoJSon Feature
+      required:
+        - type
+        - id
+        - geometry
+      externalDocs:
+        url: https://tools.ietf.org/html/rfc7946#section-3.2
+      properties:
+        type:
+          type: string
+          enum:
+            - Feature
+        id:
+          type: integer
+        geometry:
+          $ref: '#/components/schemas/GeometryCollection'
+        properties:
+          type: object
+    FeatureCollection:
+      type: object
+      description: GeoJSon Feature collection
+      required:
+        - type
+        - features
+      externalDocs:
+        url: https://tools.ietf.org/html/rfc7946#section-3.3
+      properties:
+        type:
+          type: string
+          enum:
+            - FeatureCollection
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature'

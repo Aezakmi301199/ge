@@ -1,0 +1,10 @@
+export enum PropertyStatus {
+  ACTIVE = 'ACTIVE',
+  SUSPENDED = 'SUSPENDED',
+  PREPARED = 'PREPARED',
+  DEPOSIT = 'DEPOSIT',
+  DELETED = 'DELETED',
+  SOLD = 'SOLD',
+  PRE_LISTING = 'PRE_LISTING',
+  TO_FIX = 'TO_FIX',
+}
